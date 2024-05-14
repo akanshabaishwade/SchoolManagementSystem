@@ -1,0 +1,569 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block breadcrumbs %}{% endblock breadcrumbs %}
+
+{% block content %}
+
+
+<script>
+  fetch('/students/total_students/')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('totalStudents').innerHTML = `<i class="fas fa-user-graduate student-icon text-c-blue f-30 m-r-10"></i>${data.total_students}`;
+      document.getElementById('totalTeachers').innerHTML = `<i class="fas fa-chalkboard-teacher teacher-icon text-c-red f-30 m-r-10"></i>${data.total_teachers}`;
+      document.getElementById('totalAwards').innerHTML = `<i class="fas fa-award award-icon text-c-yellow f-30 m-r-10"></i>${data.total_awards}`;
+      document.getElementById('totalRevenue').innerHTML = `<i class="feather icon-arrow-up text-c-green f-30 m-r-10"></i> ₹ ${data.total_revenue}`;
+      document.getElementById('totalStudentsGrowth').innerText = `${data.total_students_growth}%`;
+      document.getElementById('totalTeachersGrowth').innerText = `${data.total_teachers_growth}% `;
+      document.getElementById('totalAwardsGrowth').innerText = `${data.total_awards_growth}% `;
+      document.getElementById('totalRevenueGrowth').innerText = `${data.total_revenue_growth}% `;   
+   
+   });
+</script>
+
+  <!-- [ Main Content ] start -->
+  <div class="row">
+    
+    <!--[ daily sales section ] start-->
+    <div class="col-md-6 col-xl-3">
+      <div class="card daily-sales">
+        <div class="card-block">
+          <h6 class="mb-4">Students</h6>
+          <div class="row d-flex align-items-center">
+            <div class="col-9">
+              <h3  id="totalStudents" class="f-w-300 d-flex align-items-center m-b-0"><i class="fas fa-user-graduate student-icon text-c-blue f-30 m-r-10"></i>Loading...</h3>
+            </div>
+            <div class="col-3 text-right">
+              <p id='totalStudentsGrowth' class="m-b-0">67%</p>
+            </div>
+          </div>
+          <div class="progress m-t-30" style="height: 7px;">
+            <div class="progress-bar progress-c-theme" role="progressbar" style="width: 50%;"
+              aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!--[ daily sales section ] end-->
+    <!--[ Monthly  sales section ] starts-->
+    <div class="col-md-6 col-xl-3">
+      <div class="card Monthly-sales">
+        <div class="card-block">
+          <h6 class="mb-4">Teachers</h6>
+          <div class="row d-flex align-items-center">
+            <div class="col-9">
+              <h3 id="totalTeachers" class="f-w-300 d-flex align-items-center  m-b-0"><i class="fas fa-chalkboard-teacher teacher-icon text-c-red f-30 m-r-10"></i>Loading...</h3>
+            </div>
+            <div class="col-3 text-right">
+              <p id='totalTeachersGrowth' class="m-b-0">36%</p>
+            </div>
+          </div>
+          <div class="progress m-t-30" style="height: 7px;">
+            <div class="progress-bar progress-c-theme2" role="progressbar" style="width: 35%;" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!--[ Monthly  sales section ] end-->
+    <!--[ year  sales section ] starts-->
+    <div class="col-md-12 col-xl-3">
+      <div class="card yearly-sales">
+        <div class="card-block">
+          <h6 class="mb-4">Awards</h6>
+          <div class="row d-flex align-items-center">
+            <div class="col-9">
+              <h3 id ="totalAwards" class="f-w-300 d-flex align-items-center  m-b-0"><i class="fas fa-award award-icon text-c-yellow f-30 m-r-10"></i>Loading...</h3>
+            </div>
+            <div class="col-3 text-right">
+              <p id='totalAwardsGrowth' class="m-b-0">Loading...</p>
+            </div>
+          </div>
+          <div class="progress m-t-30" style="height: 7px;">
+            <div class="progress-bar progress-c-theme" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!--[ year  sales section ] end-->
+      <!--[ year  sales section ] starts-->
+      <div class="col-md-12 col-xl-3">
+        <div class="card yearly-sales">
+          <div class="card-block">
+            <h6 class="mb-4">Revenue</h6>
+            <div class="row d-flex align-items-center">
+              <div class="col-9">
+                <h3 id="totalRevenue" class="f-w-300 d-flex align-items-center  m-b-0"><i class="feather icon-arrow-up text-c-green f-30 m-r-10"></i> Loading...</h3>
+              </div>
+              <div class="col-3 text-right">
+                <p id='totalRevenueGrowth' class="m-b-0">80%</p>
+              </div>
+            </div>
+            <div class="progress m-t-30" style="height: 7px;">
+              <div class="progress-bar progress-c-theme" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+        </div>
+      </div>      
+      <!--[ year  sales section ] end-->
+      <!--[ Dounur section ] end-->
+
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>School Management Dashboard</title>
+      <!-- Include Chart.js -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  </head>
+  
+  <body>
+      <div class="container">
+          <div class="row">
+              <div class="col-md-12 col-xl-6">
+                  <div class="card yearly-sales">
+                      <div class="card-block">
+                          <h6 class="mb-4">Student Overview</h6>
+                          <div class="row d-flex align-items-center">
+                              <div class="col-12">
+                                  <!-- Chart canvas for doughnut chart -->
+                                  <canvas id="studentOverviewChart" style="width:100%;max-width:100%;"></canvas>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-12 col-xl-6">
+                  <div class="card yearly-sales">
+                      <div class="card-block">
+                          <h6 class="mb-4">Attendance Overview</h6>
+                          <div class="row d-flex align-items-center">
+                              <div class="col-12">
+                                  <!-- Chart canvas for the bar chart -->
+                                  <canvas id="attendanceChart" style="width:100%;max-width:100%;"></canvas>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  
+      <!-- Script to initialize the Charts -->
+      <script>
+        fetch('/students/student_overview/')
+          .then(response => response.json())
+          .then(data => {
+            const studentLabels = ["Boys", "Girls", "Complaints", "Absent", "Achievements"];
+            const studentData = [
+              data.boys,
+              data.girls,
+              data.complaints,
+              data.absent,
+              data.achievements
+            ];
+            const studentColors = [
+              "#3385ff", // Boys - Blue
+              "#ff3385", // Girls - Light Pink
+              "#ff3333", // Complaints - Red
+              "#ffd966", // Absent - Yellow
+              "#cc99ff"  // Achievements - Light Purple
+            ];
+
+            new Chart("studentOverviewChart", {
+              type: "doughnut",
+              data: {
+                labels: studentLabels,
+                datasets: [{
+                  backgroundColor: studentColors,
+                  data: studentData
+                }]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: "Student Overview This Week"
+                }
+              }
+            });
+            });
+
+
+          // Attendance overview data
+          fetch('/students/attendance_overview/')
+          .then(response => response.json())
+          .then(data => {
+              const days = data.days;
+              const attendanceData = data.attendanceData;
+
+          const attendanceColors = [
+              "#b91d47",
+              "#00aba9",
+              "#2b5797",
+              "#e8c3b9",
+              "#1e7145",
+              "#f0a500"
+          ];
+  
+          new Chart("attendanceChart", {
+            type: 'bar',
+            data: {
+                labels: days,
+                datasets: [{
+                    label: 'Present Students',
+                    data: attendanceData,
+                    backgroundColor: attendanceColors
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Attendance Overview This Week"
+                },
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    });
+      </script>
+  </body>
+        <!-- Attendance Overview end  -->
+
+        <!-- Teacher Leaves start -->
+
+        <script>// Fetch data from the API endpoint
+fetch('/teachers/teacher_leaves/')
+  .then(response => response.json())
+  .then(data => {
+    const tableBody = document.querySelector('.table tbody');
+
+    // Iterate over each leave record and create a table row
+    data.forEach(leave => {
+      const row = document.createElement('tr');
+      row.className = 'unread';
+
+      // Create table cells for each column
+      const imageCell = document.createElement('td');
+      const image = document.createElement('img');
+      image.className = 'rounded-circle';
+      image.style.width = '40px';
+      image.src = '{% static "assets/images/user/avatar-1.jpg" %}';
+      image.alt = 'activity-user';
+      imageCell.appendChild(image);
+      row.appendChild(imageCell);
+
+      const nameCell = document.createElement('td');
+      const name = document.createElement('h6');
+      name.className = 'mb-1';
+      name.textContent = leave.full_name;
+      nameCell.appendChild(name);
+      const description = document.createElement('p');
+      description.className = 'm-0';
+      description.textContent = leave.reason;
+      nameCell.appendChild(description);
+      row.appendChild(nameCell);
+
+      const dateCell = document.createElement('td');
+      const date = document.createElement('h6');
+      date.className = 'text-muted';
+
+      const startDate = new Date(leave.start_date);
+      const endDate = new Date(leave.end_date);
+      const startDateFormat = `${startDate.getDate()} ${startDate.toLocaleString('default', { month: 'long' })}`;
+      const endDateFormat = `${endDate.getDate()} ${endDate.toLocaleString('default', { month: 'long' })}`;
+      const daysDifference = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+      date.innerHTML = `<i class="fas fa-circle text-c-green f-10 m-r-15"></i>${startDateFormat} to ${endDateFormat} (${daysDifference} days)`;
+
+      dateCell.appendChild(date);
+      row.appendChild(dateCell);
+
+      const actionCell = document.createElement('td');
+      const rejectLink = document.createElement('a');
+      rejectLink.href = '#!';
+      rejectLink.className = 'label theme-bg2 text-white f-12';
+      rejectLink.textContent = 'Reject';
+      const approveLink = document.createElement('a');
+      approveLink.href = '#!';
+      approveLink.className = 'label theme-bg text-white f-12';
+      approveLink.textContent = 'Approve';
+      actionCell.appendChild(rejectLink);
+      actionCell.appendChild(approveLink);
+      row.appendChild(actionCell);
+
+      // Append the table row to the table body
+      tableBody.appendChild(row);
+    });
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
+
+          </script>
+          <div class="col-xl-8 col-md-6">
+            <div class="card Recent-Users">
+                <div class="card-header">
+                  <h5>Teacher Leaves</h5>
+                </div>
+                <div class="card-block px-0 py-3">
+                  <div class="table-responsive" style="height: 400px; overflow-y: scroll;">
+                    <table class="table table-hover">
+                      <tbody>
+            
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+            </div>
+          </div>
+
+    <!-- Teacher Leaves end -->
+
+
+    <!-- [ statistics year chart ] start -->
+    <!--Upcoming Event  -->
+<script>
+fetch('/students/school_events/')
+    .then(response => response.json())
+    .then(data => {
+        const upcomingEventCard = document.querySelector('.card-event');
+        const eventCount = data.school_events;
+
+        if (eventCount > 0) {
+            upcomingEventCard.querySelector('.f-w-300').textContent = eventCount;
+            const competitionText = eventCount === 1 ? 'competition' : 'competitions';
+            upcomingEventCard.querySelector('.text-muted').textContent = competitionText;
+            // Add logic to set the event icon based on your design
+        } else {
+            upcomingEventCard.querySelector('.f-w-300').textContent = 'No';
+            upcomingEventCard.querySelector('.text-muted').textContent = 'upcoming events';
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+
+</script>
+    <div class="col-xl-4 col-md-6">
+      <div class="card card-event">
+        <div class="card-block">
+          <div class="row align-items-center justify-content-center">
+            <div class="col">
+              <h5 class="m-0">Upcoming Event</h5>
+            </div>
+          </div><br>
+          <h2 class="mt-3 f-w-300">45<sub class="text-muted f-14">competition</sub></h2>
+          <i class="fab fa-angellist text-c-purple f-50"></i>
+        </div>
+      </div>
+      <!-- Upcoming Event -->
+      <div class="card">
+        <div class="card-block border-bottom">
+          <div class="row d-flex align-items-center">
+            <div class="col-auto">
+              <i class="feather icon-zap f-30 text-c-green"></i>
+            </div>
+            <div class="col">
+              <h3 class="f-w-300">235</h3>
+              <span class="d-block text-uppercase">TOTAL IDEAS</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-block">
+          <div class="row d-flex align-items-center">
+            <div class="col-auto">
+              <i class="feather icon-map-pin f-30 text-c-blue"></i>
+            </div>
+            <div class="col">
+              <h3 class="f-w-300">26</h3>
+              <span class="d-block text-uppercase">TOTAL LOCATIONS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- all data table start -->
+
+<script>
+// Fetch data from the API
+fetch('/students/all_data/')
+  .then(response => response.json())
+  .then(data => {
+    // Populate Students table
+    const studentsTable = document.getElementById('students').querySelector('tbody');
+    data.students.forEach(student => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${student.id}</td>
+        <td>${student.full_name}</td>
+        <td>${student.date_of_birth}</td>
+        <td>${student.address}</td>
+        <td>${student.gender}</td>
+        <td>${student.phone_number}</td>
+        <td>${student.date_of_enrollment}</td>
+      `;
+      studentsTable.appendChild(row);
+    });
+
+    // Populate Teachers table
+    const teachersTable = document.getElementById('teachers').querySelector('tbody');
+    data.teachers.forEach(teacher => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${teacher.id}</td>
+        <td>${teacher.full_name}</td>
+        <td>${teacher.created_at}</td>
+        <td>${teacher.updated_at}</td>
+        <td>${teacher.classes_taught.join(', ')}</td>
+      `;
+      teachersTable.appendChild(row);
+    });
+
+    // Populate School Staff table
+    const schoolStaffTable = document.getElementById('schoolstaff').querySelector('tbody');
+    data.schoolstaff.forEach(staff => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${staff.id}</td>
+        <td>${staff.name}</td>
+        <td>${staff.role}</td>
+        <td>${staff.email}</td>
+        <td>${staff.phone_number}</td>
+        <td>${staff.address}</td>
+      `;
+      schoolStaffTable.appendChild(row);
+    });
+
+    // Populate Parents table
+    const parentsTable = document.getElementById('parents').querySelector('tbody');
+    data.guardians.forEach(parent => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${parent.id}</td>
+        <td>${parent.student_full_name}</td>
+        <td>${parent.relationship_to_student}</td>
+        <td>${parent.email}</td>
+        <td>${parent.phone_number}</td>
+        <td>${parent.occupation}</td>
+        <td>${parent.address}</td>
+      `;
+      parentsTable.appendChild(row);
+    });
+
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
+
+
+</script>
+<div class="col-xl-14 col-md-12 m-b-30">
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active show" id="students-tab" data-toggle="tab" href="#students" role="tab" aria-controls="students"
+        aria-selected="true">Students</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="teachers-tab" data-toggle="tab" href="#teachers" role="tab" aria-controls="teachers"
+        aria-selected="false">Teachers</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="schoolstaff-tab" data-toggle="tab" href="#schoolstaff" role="tab" aria-controls="schoolstaff"
+        aria-selected="false">School Staff</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="parents-tab" data-toggle="tab" href="#parents" role="tab" aria-controls="parents"
+        aria-selected="false">Parents</a>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade active show" id="students" role="tabpanel" aria-labelledby="students-tab"  style="height: 600px; overflow-y: scroll;">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Full Name</th>
+            <th>Date of Birth</th>
+            <th>Address</th>
+            <th>Gender</th>
+            <th>Phone Number</th>
+            <th>Date of Enrollment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data will be dynamically populated here -->
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-pane fade" id="teachers" role="tabpanel" aria-labelledby="teachers-tab" style="height: 600px; overflow-y: scroll;">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Full Name</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th>Classes Taught</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data will be dynamically populated here -->
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-pane fade" id="schoolstaff" role="tabpanel" aria-labelledby="schoolstaff-tab" style="height: 600px; overflow-y: scroll;">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Address</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data will be dynamically populated here -->
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-pane fade" id="parents" role="tabpanel" aria-labelledby="parents-tab" style="height: 600px; overflow-y: scroll;">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Student Full Name</th>
+            <th>Relationship to Student</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Occupation</th>
+            <th>Address</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data will be dynamically populated here -->
+        </tbody>
+      </table>
+    </div>
+        </tbody>
+      </table>
+    </div> 
+  </div>
+</div>
+
+<!-- all data table end -->
+    
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}

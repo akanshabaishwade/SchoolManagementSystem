@@ -1,0 +1,1 @@
+https://github.com/app-generator/django-datta-able?tab=readme-ov-file
