@@ -23,7 +23,7 @@ if not SECRET_KEY:
 DEBUG = str2bool(os.environ.get('DEBUG'))
 #print(' DEBUG -> ' + str(DEBUG) ) 
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1']
 
 # Add here your deployment HOSTS
 CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://localhost:5085', 'http://127.0.0.1:8000', 'http://127.0.0.1:5085']
