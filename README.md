@@ -42,6 +42,11 @@ Check out the live demo [here](https://akanshabaishwade.pythonanywhere.com/).
 - **Username:** admin
 - **Password:** admin
 
+## SceenShots
+![Beige Brown Aesthetic Save The Date Editable Mockup Instagram Post](https://github.com/akanshabaishwade/SchoolManagementSystem/assets/85228361/e12988af-8024-41bd-83f8-744b62433925)
+
+![Beige Brown Aesthetic Save The Date Editable Mockup Instagram Post (6)](https://github.com/akanshabaishwade/SchoolManagementSystem/assets/85228361/e040afda-fde1-4504-992c-102b93b799f1)
+
 ## Models
 
 ### Core App
