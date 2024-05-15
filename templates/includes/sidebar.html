@@ -25,8 +25,8 @@
             <span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span>
           </a>
         </li>
-        <li class="nav-item {% if 'tables' in segment %}active{% endif %}">
-          <a href="" class="nav-link "><span class="pcoded-micon"><i
+        <li class="nav-item">
+          <a href="{% url 'index' %}" class="nav-link "><span class="pcoded-micon"><i
                 class="feather icon-server text-c-green"></i></span><span class="pcoded-mtext">Dynamic Tables</span></a>
         </li>
         {% if not request.user.is_authenticated %}
