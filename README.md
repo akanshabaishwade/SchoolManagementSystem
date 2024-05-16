@@ -11,23 +11,24 @@ A comprehensive Django-based web application for efficiently managing schools, s
 ### Design
 - **Responsive Design**: Seamlessly experience across devices (desktops, tablets, smartphones).
 
+### Student Records
+- **Attendance & Performance**: Track student attendance and academic performance.
+- **Fees & Health Records**: Manage student fee payments and health records.
+- **Achievements**: Record and track student achievements.
+
+### Teacher Management
+- **Information Management**: Manage teacher details, qualifications, salary, and leave requests.
+
+
+### School Staff Management
+- **Staff Information**: Manage information of all school staff, ensuring efficient personnel management.
+
 ### Guardian & Complaint Management
 - **Guardian Information**: Manage guardian details, including emergency contacts.
 - **Complaint Handling**: Students and guardians can file complaints, administrators can efficiently track and manage them.
 
 ### Parent-Teacher Meetings (PTM)
 - **Scheduling**: Facilitate PTM scheduling and management, improving communication between teachers and parents.
-
-### Teacher Management
-- **Information Management**: Manage teacher details, qualifications, salary, and leave requests.
-
-### Student Records
-- **Attendance & Performance**: Track student attendance and academic performance.
-- **Fees & Health Records**: Manage student fee payments and health records.
-- **Achievements**: Record and track student achievements.
-
-### School Staff Management
-- **Staff Information**: Manage information of all school staff, ensuring efficient personnel management.
 
 ### Event Management
 - **Organization**: Organize and manage school events, enhancing the overall school experience.
