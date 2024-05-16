@@ -50,19 +50,14 @@ Check out the live demo [here](https://akanshabaishwade.pythonanywhere.com/).
 
 ## Models
 
-### Core App
-
-| Model Name            | Description                                      |
-|-----------------------|--------------------------------------------------|
-| CustomUser            | Custom user model with roles for different users |
-| TimeStampedModel      | Abstract base model with timestamp fields       |
-
 ### Base App
 
 | Model Name            | Description                                      |
 |-----------------------|--------------------------------------------------|
 | Role                  | Role definition for users                        |
 | Permission            | Permission definition for roles                  |
+| CustomUser            | Custom user model with roles for different users |
+| TimeStampedModel      | Abstract base model with timestamp fields       |
 
 ### Students App
 
