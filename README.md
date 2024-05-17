@@ -48,6 +48,8 @@ Check out the live demo [here](https://akanshabaishwade.pythonanywhere.com/).
 
 ![Beige Brown Aesthetic Save The Date Editable Mockup Instagram Post (6)](https://github.com/akanshabaishwade/SchoolManagementSystem/assets/85228361/e040afda-fde1-4504-992c-102b93b799f1)
 
+## Video Links
+https://drive.google.com/file/d/1NJClRlVVtsaux8YW9fTHIPnQwtMGQGxF/view?usp=drive_link
 ## Models
 
 ### Base App
