@@ -1,0 +1,253 @@
+Here’s a step-by-step guide to implementing notifications in Django using Django Channels. Each step includes code and configuration snippets for clarity.
+
+### Step-by-Step Guide for Implementing Notifications in Django
+
+#### Step 1: Install Django Channels
+
+```bash
+pip install channels
+```
+
+#### Step 2: Configure Django Settings
+
+1. **Add Channels to Installed Apps**
+
+   In your `settings.py`, add `'channels'` to `INSTALLED_APPS`:
+
+   ```python
+   INSTALLED_APPS = [
+       ...
+       'channels',
+       ...
+   ]
+   ```
+
+2. **Set WSGI and ASGI Applications**
+
+   Define the ASGI application in `settings.py`:
+
+   ```python
+   ASGI_APPLICATION = 'core_project.asgi.application'
+   ```
+
+3. **Configure Channel Layers**
+
+   Add a channel layer to `settings.py`:
+
+   ```python
+   CHANNEL_LAYERS = {
+       'default': {
+           "BACKEND": "channels.layers.InMemoryChannelLayer"
+       },
+   }
+   ```
+
+#### Step 3: Create Notification Model
+
+1. **Define the Notification Model**
+
+   In `models.py`:
+
+   ```python
+   from django.db import models
+   from django.contrib.auth.models import AbstractUser, Group, Permission
+   from django.utils.translation import gettext_lazy as _
+   from model_utils.models import TimeStampedModel
+
+   class CustomUser(AbstractUser):
+       STUDENT = 'student'
+       TEACHER = 'teacher'
+       GUARDIAN = 'guardian'
+
+       ROLE_CHOICES = [
+           (STUDENT, 'Student'),
+           (TEACHER, 'Teacher'),
+           (GUARDIAN, 'Guardian'),
+       ]
+
+       role = models.CharField(max_length=20, choices=ROLE_CHOICES, default=STUDENT)
+       groups = models.ManyToManyField(
+           Group,
+           verbose_name=_('groups'),
+           blank=True,
+           related_name='custom_user_groups'
+       )
+       user_permissions = models.ManyToManyField(
+           Permission,
+           verbose_name=_('user permissions'),
+           blank=True,
+           related_name='custom_user_permissions'
+       )
+
+       def __str__(self):
+           return self.username
+
+   class Notification(TimeStampedModel):
+       user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='notifications', to_field='phone_number')
+       message = models.TextField()
+       is_read = models.BooleanField(default=False)
+       delivered = models.BooleanField(default=False)
+       
+       def __str__(self):
+           return self.message
+   ```
+
+#### Step 4: Set Up WebSocket Routing
+
+1. **Define WebSocket URLs**
+
+   In `notifications/routing.py`:
+
+   ```python
+   from django.urls import re_path
+   from . import consumers
+
+   websocket_urlpatterns = [
+       re_path(r'ws/notifications/(?P<user_id>\w+)/$', consumers.NotificationConsumer.as_asgi()),
+   ]
+   ```
+
+#### Step 5: Create Notification Consumer
+
+1. **Define the WebSocket Consumer**
+
+   In `notifications/consumers.py`:
+
+   ```python
+   import json
+   from channels.generic.websocket import AsyncWebsocketConsumer
+   import logging
+
+   logger = logging.getLogger(__name__)
+
+   class NotificationConsumer(AsyncWebsocketConsumer):
+       async def connect(self):
+           self.user = self.scope["user"]
+           self.room_group_name = f"user_{self.user.id}_notifications"
+
+           await self.channel_layer.group_add(
+               self.room_group_name,
+               self.channel_name
+           )
+
+           await self.accept()
+           logger.info(f"WebSocket connected for user {self.user.id}")
+
+       async def disconnect(self, close_code):
+           await self.channel_layer.group_discard(
+               self.room_group_name,
+               self.channel_name
+           )
+           logger.info(f"WebSocket disconnected for user {self.user.id}")
+
+       async def notification_message(self, event):
+           message = event['message']
+           logger.info(f"Sending notification to user {self.user.id}: {message}")
+           await self.send(text_data=json.dumps({
+               'message': message
+           }))
+   ```
+
+#### Step 6: Set Up Signal for Notifications
+
+1. **Create Signal for Sending Notifications**
+
+   In `notifications/signals.py`:
+
+   ```python
+   from django.db.models.signals import post_save
+   from django.dispatch import receiver
+   from channels.layers import get_channel_layer
+   from asgiref.sync import async_to_sync
+   from .models import Notification
+
+   @receiver(post_save, sender=Notification)
+   def notification_created(sender, instance, created, **kwargs):
+       if created:
+           channel_layer = get_channel_layer()
+           async_to_sync(channel_layer.group_send)(
+               f"user_{instance.user.id}_notifications",
+               {
+                   'type': 'notification_message',
+                   'message': instance.message
+               }
+           )
+   ```
+
+2. **Ensure Signals are Loaded**
+
+   Make sure `signals.py` is imported in your `apps.py` or `__init__.py` of the `notifications` app to ensure signals are registered.
+
+#### Step 7: Create Notification API Endpoints
+
+1. **Define the Notification API Views**
+
+   In `notifications/views.py`:
+
+   ```python
+   from rest_framework import generics
+   from .models import Notification
+   from .serializers import NotificationSerializer
+
+   class NotificationGetApi(generics.ListCreateAPIView):
+       queryset = Notification.objects.all()
+       serializer_class = NotificationSerializer
+
+   class NotificationPostApi(generics.CreateAPIView):
+       queryset = Notification.objects.all()
+       serializer_class = NotificationSerializer
+   ```
+
+2. **Add API Endpoints to URL Configuration**
+
+   In `notifications/urls.py`:
+
+   ```python
+   from django.urls import path
+   from .views import NotificationGetApi, NotificationPostApi
+
+   urlpatterns = [
+       path('notification/get/', NotificationGetApi.as_view(), name="Notification-get"),
+       path('notification/post/', NotificationPostApi.as_view(), name="Notification-post"),
+   ]
+   ```
+
+#### Step 8: Update `asgi.py` to Include WebSocket Routing
+
+1. **Include WebSocket Routing**
+
+   In `core_project/asgi.py`:
+
+   ```python
+    import os
+    from django.core.asgi import get_asgi_application
+    from channels.routing import ProtocolTypeRouter, URLRouter
+    from channels.auth import AuthMiddlewareStack
+    import apps.notifications.routing
+
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
+
+    application = ProtocolTypeRouter({
+        "http": get_asgi_application(),
+        "websocket": AuthMiddlewareStack(
+            URLRouter(
+                apps.notifications.routing.websocket_urlpatterns
+            )
+        ),
+    })
+   ```
+
+#### Step 9: Run Migrations and Start the Server
+
+1. **Apply Migrations**
+
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
+
+2. **Run the Server**
+
+   ```bash
+   python manage.py runserver
+   ```

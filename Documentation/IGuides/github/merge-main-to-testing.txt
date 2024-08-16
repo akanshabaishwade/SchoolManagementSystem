@@ -1,0 +1,57 @@
+
+**Update Testing Branch with Main**
+
+**Objective:** Update your `testing` branch with the latest changes from the `main` branch.
+
+**Method 1: Using Merge**
+
+1. **Switch to `testing` Branch**
+   Ensure you are on the `testing` branch:
+   - `git checkout testing`
+
+2. **Fetch Latest Changes**
+   Fetch the latest changes from the remote repository:
+   - `git fetch origin`
+
+3. **Merge `main` into `testing`**
+   Merge the `main` branch into your `testing` branch:
+   - `git merge origin/main`
+   - If there are conflicts:
+     - Open the conflicted files.
+     - Resolve the conflicts manually.
+     - Stage the resolved files:
+       - `git add <resolved-file>`
+     - Complete the merge:
+       - `git commit`
+
+4. **Push the Updated `testing` Branch**
+   Push the changes to the remote `testing` branch:
+   - `git push origin testing`
+
+**Alternative Method: Using Rebase**
+
+1. **Switch to `testing` Branch**
+   - `git checkout testing`
+
+2. **Fetch Latest Changes**
+   - `git fetch origin`
+
+3. **Rebase `testing` onto `main`**
+   Rebase your `testing` branch on top of the latest `main` branch:
+   - `git rebase origin/main`
+   - If there are conflicts:
+     - Open the conflicted files.
+     - Resolve the conflicts manually.
+     - Stage the resolved files:
+       - `git add <resolved-file>`
+     - Continue the rebase:
+       - `git rebase --continue`
+
+4. **Push the Rebases Branch**
+   Force push the updated `testing` branch to the remote:
+   - `git push origin testing --force`
+
+**Notes:**
+
+- **Merge:** Keeps the history of both branches.
+- **Rebase:** Creates a linear history by applying changes on top of `main`.

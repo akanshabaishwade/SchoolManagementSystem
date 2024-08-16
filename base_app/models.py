@@ -23,8 +23,6 @@ class CustomUser(AbstractUser):
     ]
 
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default=STUDENT)
-
-
     groups = models.ManyToManyField(
         Group,
         verbose_name=_('groups'),

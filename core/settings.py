@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "apps.students",
     "apps.teachers",
     "apps.guardians",
+    "apps.notifications",
     "base_app",
 
 
@@ -59,6 +60,10 @@ INSTALLED_APPS = [
     'django_api_gen',            # Django API GENERATOR  # <-- NEW
     'rest_framework',            # Include DRF           # <-- NEW 
     'rest_framework.authtoken',  # Include DRF Auth      # <-- NEW     
+    
+    #other
+    'channels', #notifications
+
 ]
 
 MIDDLEWARE = [
@@ -205,4 +210,14 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'base_app.CustomUser'
 
 
+# Notification Settings
+WSGI_APPLICATION = 'core.wsgi.application'
 
+ASGI_APPLICATION = 'core.asgi.application'
+
+
+CHANNEL_LAYERS = {
+    'default': {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    },
+}
